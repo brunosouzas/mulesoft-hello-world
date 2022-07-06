@@ -25,7 +25,7 @@ steps:
     path: $(MAVEN_CACHE_FOLDER)
   displayName: Cache Maven local repo
 
-task: MavenAuthenticate@0
+- task: MavenAuthenticate@0
   displayName: 'Maven Authenticate'
 
 - task: Maven@3
