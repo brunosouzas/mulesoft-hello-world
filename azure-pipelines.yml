@@ -19,7 +19,7 @@ variables:
 
 steps:
 
-task: MavenAuthenticate@0
+- task: MavenAuthenticate@0
   displayName: 'Maven Authenticate'
 
 - task: Maven@3
