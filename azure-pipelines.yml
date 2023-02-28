@@ -1,0 +1,14 @@
+name: $(Date:yyyyMMdd).$(Rev:r)
+
+resources: 
+  repositories:
+    - repository: devops-scripts
+      type: git
+      name: mulesoft-projects/devops-scripts
+      ref: refs/heads/main
+
+trigger:
+- develop
+
+stages:
+- template: mulesoft-jobs.yml@devops-scripts
