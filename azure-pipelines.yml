@@ -9,8 +9,6 @@ resources:
 
 trigger:
 - develop
-- release-*
-- main
 
 stages:
 - template: mulesoft-jobs.yml@devops-scripts
