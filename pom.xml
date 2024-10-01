@@ -4,20 +4,21 @@
 
 	<groupId>2da82d73-0eea-4110-9f74-5739fc63a6d1</groupId>
 	<artifactId>hello-world</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-RC-01</version>
 	<packaging>mule-application</packaging>
 
 	<name>hello-world</name>
 
 	<scm>
 		<developerConnection>scm:git:git@github.com:brunosouzas/mulesoft-hello-world.git</developerConnection>
-	</scm>
+	  <tag>v1.0.0-RC-01</tag>
+  </scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<rc.number>01</rc.number>
-		<version.replace>${project.version}</version.replace>
+		<version.replace>1.0.0</version.replace>
 		<app.runtime>4.7.0</app.runtime>
 		<mule.maven.plugin.version>4.2.0</mule.maven.plugin.version>
 		<maven.release.plugin.version>3.0.1</maven.release.plugin.version>
@@ -46,28 +47,41 @@
 				</configuration>
 			</plugin>
 			
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <id>parse-version</id>
-                        <goals>
-                            <goal>parse-version</goal>
-                        </goals>
-                        <phase>validate</phase>
-                        <configuration>
-                            <propertyPrefix>parsed.</propertyPrefix>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>3.0.0</version>
+            <executions>
+                <execution>
+                    <id>regex-property</id>
+                    <goals>
+                        <goal>regex-property</goal>
+                    </goals>
+                    <configuration>
+                        <name>modified.version</name>
+                        <value>${project.version}</value>
+                        <regex>\.([0-9]+)-SNAPSHOT</regex>
+                        <replacement>-$1</replacement>
+                        <failIfNoMatch>false</failIfNoMatch>
+                    </configuration>
+                </execution>
+
+                <execution>
+                    <id>parse-version</id>
+                    <goals>
+                        <goal>parse-version</goal>
+                    </goals>
+                    <configuration>
+                    <versionString>${modified.version}</versionString>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
             
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <phase>validate</phase>
@@ -75,13 +89,24 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
+                        	<exportAntProperties>true</exportAntProperties>
                             <target>
-                                <echo message="Original Version: ${parsed.version}"/>
-                                <!-- Set the version.replace property to remove SNAPSHOT -->
-                                <condition property="version.replace" value="${parsed.majorVersion}.${parsed.minorVersion}.${parsed.incrementalVersion}">
-                                    <isset property="parsed.qualifier"/>
-                                </condition>
-                                <echo message="Updated Version (without SNAPSHOT): ${version.replace}"/>
+								<echo>Major: ${parsedVersion.majorVersion}</echo>
+	                            <echo>Minor: ${parsedVersion.minorVersion}</echo>
+	                            <echo>Incremental: ${parsedVersion.incrementalVersion}</echo>
+	                            <echo>Qualifier: ${parsedVersion.qualifier}</echo>
+	                            <echo>BuildNumber: ${parsedVersion.buildNumber}</echo>
+	                            <echo>----------------</echo>
+	                            <echo>Next Major: ${parsedVersion.nextMajorVersion}</echo>
+	                            <echo>Next Minor: ${parsedVersion.nextMinorVersion}</echo>
+	                            <echo>Next Incremental: ${parsedVersion.nextIncrementalVersion}</echo>
+	                            <echo>Next BuildNumber: ${parsedVersion.nextBuildNumber}</echo>
+
+								<property name="new.project.version" value="${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}" />
+								
+								                                <!-- Echo the result for verification -->
+                                <echo message="Original Version: ${project.version}" />
+                                <echo message="Updated Version (without SNAPSHOT): ${new.project.version}" />
                             </target>
                         </configuration>
                     </execution>
@@ -93,7 +118,7 @@
 				<version>${maven.release.plugin.version}</version>
 				<configuration>
 					<releaseVersion>${version.replace}-RC-${rc.number}</releaseVersion>
-                	<tagNameFormat>v@{version.replace}-RC-${rc.number}</tagNameFormat>
+                	<tagNameFormat>v@{project.version}</tagNameFormat>
 					<checkModificationExcludes>
 						<checkModificationExclude>pom.xml</checkModificationExclude>
 					</checkModificationExcludes>
