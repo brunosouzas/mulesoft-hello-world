@@ -4,14 +4,14 @@
 
 	<groupId>2da82d73-0eea-4110-9f74-5739fc63a6d1</groupId>
 	<artifactId>hello-world</artifactId>
-	<version>1.0.0-RC-02-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>mule-application</packaging>
 
 	<name>hello-world</name>
 
 	<scm>
 		<developerConnection>scm:git:git@github.com:brunosouzas/mulesoft-hello-world.git</developerConnection>
-	  <tag>HEAD</tag>
+	  <tag>v1.0.0</tag>
   </scm>
 
 	<properties>
@@ -117,7 +117,6 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>${maven.release.plugin.version}</version>
 				<configuration>
-					<releaseVersion>${version.replace}-RC-${rc.number}</releaseVersion>
                 	<tagNameFormat>v@{project.version}</tagNameFormat>
 					<checkModificationExcludes>
 						<checkModificationExclude>pom.xml</checkModificationExclude>
