@@ -4,14 +4,14 @@
 
 	<groupId>2da82d73-0eea-4110-9f74-5739fc63a6d1</groupId>
 	<artifactId>hello-world</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 
 	<name>hello-world</name>
 
 	<scm>
 		<developerConnection>scm:git:git@github.com:brunosouzas/mulesoft-hello-world.git</developerConnection>
-	  <tag>v1.0.0</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<properties>
